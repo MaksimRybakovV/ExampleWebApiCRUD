@@ -69,6 +69,36 @@ namespace ExampleWebApiCRUD.Services.CustomerService
             return responce;
         }
 
+        public async Task<PageServiceResponce<List<GetCustomerDto>>> GetCustomerByPageAsync(int page, int pageSize)
+        {
+            var responce = new PageServiceResponce<List<GetCustomerDto>>();
+
+            try
+            {
+                var pageCount = Math.Ceiling(_context.Customers.Count() / (float)pageSize);
+
+                if (page > pageCount)
+                    throw new Exception($"The page {page} does not exist. The maximum number of pages is {pageCount}.");
+
+                var customers = await _context.Customers
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .Select(c => _mapper.Map<GetCustomerDto>(c))
+                    .ToListAsync();
+
+                responce.Data = customers;
+                responce.CurrentPage = page;
+                responce.PageCount = (int)pageCount;
+            }
+            catch (Exception ex)
+            {
+                responce.IsSuccessful = false;
+                responce.Message = ex.Message;
+            }
+
+            return responce;
+        }
+
         public async Task<ServiceResponce<GetCustomerDto>> UpdateCustomerAsync(UpdateCustomerDto updatedCustomer)
         {
             var responce = new ServiceResponce<GetCustomerDto>();
