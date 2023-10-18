@@ -1,7 +1,7 @@
-﻿using ExampleWebApiCRUD.Entities.Dtos.Customer;
+﻿using ExampleWebApiCRUD.Entities.Dtos.CustomerDtos;
 using ExampleWebApiCRUD.Entities.Models;
 
-namespace ExampleWebApiCRUD.Services
+namespace ExampleWebApiCRUD.Services.CustomerService
 {
     public interface ICustomerService
     {
