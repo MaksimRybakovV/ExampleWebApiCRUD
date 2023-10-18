@@ -66,7 +66,7 @@ namespace ExampleWebApiCRUD.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult<ServiceResponce<List<GetCustomerDto>>>> DeleteCustomer([FromQuery] int id)
+        public async Task<ActionResult<ServiceResponce<List<GetCustomerDto>>>> DeleteCustomer(int id)
         {
             var responce = await _service.DeleteCustomerAsync(id);
 

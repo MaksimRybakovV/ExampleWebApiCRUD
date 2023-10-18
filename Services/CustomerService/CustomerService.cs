@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExampleWebApiCRUD.Services.CustomerService
 {
-    public class CustomerService : BaseService, ICustomerService
+    public class CustomerService : BaseService<Customer>, ICustomerService
     {
-        public CustomerService(DataContext context, IMapper mapper) : base(context, mapper) { }
+        public CustomerService(DataContext context, IMapper mapper, ILogger<Customer> logger) : base(context, mapper, logger) { }
 
         public async Task<ServiceResponce<List<GetCustomerDto>>> AddCustomerAsync(AddCustomerDto newCustomer)
         {
@@ -16,6 +16,7 @@ namespace ExampleWebApiCRUD.Services.CustomerService
             await _context.Customers.AddAsync(_mapper.Map<Customer>(newCustomer));
             await _context.SaveChangesAsync();
             responce.Data = await _context.Customers.Select(c => _mapper.Map<GetCustomerDto>(c)).ToListAsync();
+            _logger.LogInformation("The object was created with the values {@newCustomer}.", newCustomer);
             return responce;
         }
 
@@ -32,11 +33,14 @@ namespace ExampleWebApiCRUD.Services.CustomerService
                 await _context.SaveChangesAsync();
 
                 responce.Data = await _context.Customers.Select(c => _mapper.Map<GetCustomerDto>(c)).ToListAsync();
+
+                _logger.LogInformation("The object with ID '{id}' has been deleted.", id);
             }
             catch (Exception ex)
             {
                 responce.IsSuccessful = false;
                 responce.Message = ex.Message;
+                _logger.LogError("The object with ID '{updatedCustomer.Id}' not found.", id);
             }
 
             return responce;
@@ -110,7 +114,6 @@ namespace ExampleWebApiCRUD.Services.CustomerService
 
                 customer.FirstName = updatedCustomer.FirstName;
                 customer.LastName = updatedCustomer.LastName;
-                customer.BirthDate = updatedCustomer.BirthDate;
                 customer.Age = updatedCustomer.Age;
                 customer.Address = updatedCustomer.Address;
                 customer.Gender = updatedCustomer.Gender;
@@ -118,11 +121,15 @@ namespace ExampleWebApiCRUD.Services.CustomerService
                 await _context.SaveChangesAsync();
 
                 responce.Data = _mapper.Map<GetCustomerDto>(customer);
+
+                _logger.LogInformation("The object with ID '{updatedCustomer.Id}' has been updated " +
+                    "with values {@updatedCustomer}.", updatedCustomer.Id, updatedCustomer);
             }
             catch (Exception ex)
             {
                 responce.IsSuccessful = false;
                 responce.Message = ex.Message;
+                _logger.LogError("The object with ID '{updatedCustomer.Id}' not found.", updatedCustomer.Id);
             }
 
             return responce;

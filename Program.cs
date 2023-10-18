@@ -1,5 +1,6 @@
 using ExampleWebApiCRUD.Data;
 using ExampleWebApiCRUD.Services.CustomerService;
+using Serilog;
 
 namespace ExampleWebApiCRUD
 {
@@ -18,6 +19,13 @@ namespace ExampleWebApiCRUD
             builder.Services.AddSwaggerGen();
             builder.Services.AddAutoMapper(typeof(Program).Assembly);
             builder.Services.AddScoped<ICustomerService, CustomerService>();
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File("Logs/MyTestLog.txt",
+                    rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            builder.Host.UseSerilog();
 
             var app = builder.Build();
 
