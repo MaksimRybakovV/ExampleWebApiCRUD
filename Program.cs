@@ -1,5 +1,5 @@
-
 using ExampleWebApiCRUD.Data;
+using ExampleWebApiCRUD.Services.CustomerService;
 
 namespace ExampleWebApiCRUD
 {
@@ -16,6 +16,8 @@ namespace ExampleWebApiCRUD
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddAutoMapper(typeof(Program).Assembly);
+            builder.Services.AddScoped<ICustomerService, CustomerService>();
 
             var app = builder.Build();
 

@@ -2,7 +2,7 @@
 using ExampleWebApiCRUD.Entities.Dtos.CustomerDtos;
 using ExampleWebApiCRUD.Entities.Models;
 
-namespace ExampleWebApiCRUD.Controllers
+namespace ExampleWebApiCRUD
 {
     public class AutoMapperProfile : Profile
     {
