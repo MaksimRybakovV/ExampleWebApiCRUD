@@ -1,4 +1,5 @@
-﻿using ExampleWebApiCRUD.Entities.Dtos.CustomerDtos;
+﻿using Asp.Versioning;
+using ExampleWebApiCRUD.Entities.Dtos.CustomerDtos;
 using ExampleWebApiCRUD.Entities.Models;
 using ExampleWebApiCRUD.Services.CustomerService;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ExampleWebApiCRUD.Controllers
 {
     [ApiController]
+    [ApiVersion(1.0)]
     [Route("api/[controller]")]
     public class CustomersController : ControllerBase
     {
