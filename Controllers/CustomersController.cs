@@ -26,7 +26,7 @@ namespace ExampleWebApiCRUD.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<ServiceResponce<GetCustomerDto>>> GetSingle([FromQuery]int id)
+        public async Task<ActionResult<ServiceResponce<GetCustomerDto>>> GetSingle(int id)
         {
             var responce = await _service.GetCustomerByIdAsync(id);
 
