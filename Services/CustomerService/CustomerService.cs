@@ -40,7 +40,7 @@ namespace ExampleWebApiCRUD.Services.CustomerService
             {
                 responce.IsSuccessful = false;
                 responce.Message = ex.Message;
-                _logger.LogError("The object with ID '{updatedCustomer.Id}' not found.", id);
+                _logger.LogError("The object with ID '{id}' not found.", id);
             }
 
             return responce;
