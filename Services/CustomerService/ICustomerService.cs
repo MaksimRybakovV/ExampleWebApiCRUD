@@ -5,11 +5,11 @@ namespace ExampleWebApiCRUD.Services.CustomerService
 {
     public interface ICustomerService
     {
-        public Task<ServiceResponce<List<GetCustomerDto>>> GetAllCustomersAsync();
-        public Task<ServiceResponce<GetCustomerDto>> GetCustomerByIdAsync(int id);
-        public Task<PageServiceResponce<List<GetCustomerDto>>> GetCustomerByPageAsync(int page, int pageSize);
-        public Task<ServiceResponce<List<GetCustomerDto>>> AddCustomerAsync(AddCustomerDto newCustomer);
-        public Task<ServiceResponce<GetCustomerDto>> UpdateCustomerAsync(UpdateCustomerDto updatedCustomer);
-        public Task<ServiceResponce<List<GetCustomerDto>>> DeleteCustomerAsync(int id);
+        public Task<ServiceResponse<List<GetCustomerDto>>> GetAllCustomersAsync();
+        public Task<ServiceResponse<GetCustomerDto>> GetCustomerByIdAsync(int id);
+        public Task<PageServiceResponse<List<GetCustomerDto>>> GetCustomerByPageAsync(int page, int pageSize);
+        public Task<ServiceResponse<List<GetCustomerDto>>> AddCustomerAsync(AddCustomerDto newCustomer);
+        public Task<ServiceResponse<GetCustomerDto>> UpdateCustomerAsync(UpdateCustomerDto updatedCustomer);
+        public Task<ServiceResponse<List<GetCustomerDto>>> DeleteCustomerAsync(int id);
     }
 }

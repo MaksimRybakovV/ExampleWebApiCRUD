@@ -10,19 +10,19 @@ namespace ExampleWebApiCRUD.Services.CustomerService
     {
         public CustomerService(DataContext context, IMapper mapper, ILogger<Customer> logger) : base(context, mapper, logger) { }
 
-        public async Task<ServiceResponce<List<GetCustomerDto>>> AddCustomerAsync(AddCustomerDto newCustomer)
+        public async Task<ServiceResponse<List<GetCustomerDto>>> AddCustomerAsync(AddCustomerDto newCustomer)
         {
-            var responce = new ServiceResponce<List<GetCustomerDto>>();
+            var response = new ServiceResponse<List<GetCustomerDto>>();
             await _context.Customers.AddAsync(_mapper.Map<Customer>(newCustomer));
             await _context.SaveChangesAsync();
-            responce.Data = await _context.Customers.Select(c => _mapper.Map<GetCustomerDto>(c)).ToListAsync();
+            response.Data = await _context.Customers.Select(c => _mapper.Map<GetCustomerDto>(c)).ToListAsync();
             _logger.LogInformation("The object was created with the values {@newCustomer}.", newCustomer);
-            return responce;
+            return response;
         }
 
-        public async Task<ServiceResponce<List<GetCustomerDto>>> DeleteCustomerAsync(int id)
+        public async Task<ServiceResponse<List<GetCustomerDto>>> DeleteCustomerAsync(int id)
         {
-            var responce = new ServiceResponce<List<GetCustomerDto>>();
+            var response = new ServiceResponse<List<GetCustomerDto>>();
 
             try
             {
@@ -32,50 +32,50 @@ namespace ExampleWebApiCRUD.Services.CustomerService
                 _context.Customers.Remove(customer);
                 await _context.SaveChangesAsync();
 
-                responce.Data = await _context.Customers.Select(c => _mapper.Map<GetCustomerDto>(c)).ToListAsync();
+                response.Data = await _context.Customers.Select(c => _mapper.Map<GetCustomerDto>(c)).ToListAsync();
 
                 _logger.LogInformation("The object with ID '{id}' has been deleted.", id);
             }
             catch (Exception ex)
             {
-                responce.IsSuccessful = false;
-                responce.Message = ex.Message;
+                response.IsSuccessful = false;
+                response.Message = ex.Message;
                 _logger.LogError("The object with ID '{id}' not found.", id);
             }
 
-            return responce;
+            return response;
         }
 
-        public async Task<ServiceResponce<List<GetCustomerDto>>> GetAllCustomersAsync()
+        public async Task<ServiceResponse<List<GetCustomerDto>>> GetAllCustomersAsync()
         {
-            var responce = new ServiceResponce<List<GetCustomerDto>>();
-            responce.Data = await _context.Customers.Select(c => _mapper.Map<GetCustomerDto>(c)).ToListAsync();
-            return responce;
+            var response = new ServiceResponse<List<GetCustomerDto>>();
+            response.Data = await _context.Customers.Select(c => _mapper.Map<GetCustomerDto>(c)).ToListAsync();
+            return response;
         }
 
-        public async Task<ServiceResponce<GetCustomerDto>> GetCustomerByIdAsync(int id)
+        public async Task<ServiceResponse<GetCustomerDto>> GetCustomerByIdAsync(int id)
         {
-            var responce = new ServiceResponce<GetCustomerDto>();
+            var response = new ServiceResponse<GetCustomerDto>();
             
             try
             {
                 var customer = await _context.Customers.SingleOrDefaultAsync(c => c.Id == id)
                     ?? throw new Exception($"Customer with Id '{id}' not found!");
 
-                responce.Data = _mapper.Map<GetCustomerDto>(customer);
+                response.Data = _mapper.Map<GetCustomerDto>(customer);
             }
             catch (Exception ex)
             {
-                responce.IsSuccessful = false;
-                responce.Message = ex.Message;
+                response.IsSuccessful = false;
+                response.Message = ex.Message;
             }
 
-            return responce;
+            return response;
         }
 
-        public async Task<PageServiceResponce<List<GetCustomerDto>>> GetCustomerByPageAsync(int page, int pageSize)
+        public async Task<PageServiceResponse<List<GetCustomerDto>>> GetCustomerByPageAsync(int page, int pageSize)
         {
-            var responce = new PageServiceResponce<List<GetCustomerDto>>();
+            var response = new PageServiceResponse<List<GetCustomerDto>>();
 
             try
             {
@@ -90,22 +90,22 @@ namespace ExampleWebApiCRUD.Services.CustomerService
                     .Select(c => _mapper.Map<GetCustomerDto>(c))
                     .ToListAsync();
 
-                responce.Data = customers;
-                responce.CurrentPage = page;
-                responce.PageCount = (int)pageCount;
+                response.Data = customers;
+                response.CurrentPage = page;
+                response.PageCount = (int)pageCount;
             }
             catch (Exception ex)
             {
-                responce.IsSuccessful = false;
-                responce.Message = ex.Message;
+                response.IsSuccessful = false;
+                response.Message = ex.Message;
             }
 
-            return responce;
+            return response;
         }
 
-        public async Task<ServiceResponce<GetCustomerDto>> UpdateCustomerAsync(UpdateCustomerDto updatedCustomer)
+        public async Task<ServiceResponse<GetCustomerDto>> UpdateCustomerAsync(UpdateCustomerDto updatedCustomer)
         {
-            var responce = new ServiceResponce<GetCustomerDto>();
+            var response = new ServiceResponse<GetCustomerDto>();
 
             try
             {
@@ -120,19 +120,19 @@ namespace ExampleWebApiCRUD.Services.CustomerService
 
                 await _context.SaveChangesAsync();
 
-                responce.Data = _mapper.Map<GetCustomerDto>(customer);
+                response.Data = _mapper.Map<GetCustomerDto>(customer);
 
                 _logger.LogInformation("The object with ID '{updatedCustomer.Id}' has been updated " +
                     "with values {@updatedCustomer}.", updatedCustomer.Id, updatedCustomer);
             }
             catch (Exception ex)
             {
-                responce.IsSuccessful = false;
-                responce.Message = ex.Message;
+                response.IsSuccessful = false;
+                response.Message = ex.Message;
                 _logger.LogError("The object with ID '{updatedCustomer.Id}' not found.", updatedCustomer.Id);
             }
 
-            return responce;
+            return response;
         }
     }
 }
